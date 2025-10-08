@@ -29,14 +29,14 @@ Cột ngày (d_1 → d_1913): 1913
 Không có cột ngày nào sai định dạng (d_x với x là số).
 không có tên cột bị trùng lặp khoảng trắng ký tự đặc biệt
 
-## 2. kết quả phân tích
+## 2. kết quả phân tích và phương pháp
 
 - dữ liệu trùng lặp => kết quả đưa ra không có giá trị trùng lặp
 - dữ liệu thiếu => kết quả đưa ra không có giá trị thiếu
 - giá trị ngoại lệ: áp dụng phương pháp Modified Z-score (MAD) do Khi áp dụng công thức IQR (ngưỡng 1.5 \* IQR), các điểm tăng vọt này dễ bị coi là ngoại lệ, dù thật ra chúng hợp lý trong ngữ cảnh.
   có 1908 giá trị ngoại lệ trong 30.490 dữ liệu tại cột d_1898
   => Phần lớn dữ liệu của d_1898 ổn định (≈90%), nhưng có khoảng 10% dữ liệu bất thường. Đây là tín hiệu quan trọng để xem xét trước khi đưa dữ liệu vào huấn luyện mô hình dự báo.
-- giá trị duy nhất
+- giá trị duy nhất:
   các cột meta
   id → 30,490 giá trị duy nhất (mỗi dòng dữ liệu có một id riêng).
   item_id → 3,049 sản phẩm khác nhau.

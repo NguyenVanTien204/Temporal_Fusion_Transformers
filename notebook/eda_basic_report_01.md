@@ -68,7 +68,7 @@ Danh sách cột: ['date', 'wm_yr_wk', 'weekday', 'wday', 'month', 'year', 'd', 
 - Không có cột chứa ký tự đặc biệt hoặc khoảng trắng.
 - không có mismatch của 2 cặp event_name với event type 1 và 2
 - cột wm_yr_wk được tính theo lịch walmart retail calendar
-- các dữ liệu trong bộ dữ liệu đã đưa về dạng chuẩn
+- các dữ liệu trong bộ dữ liệu đa số đã đưa về dạng chuẩn, cột date nên ở dạng datetime
 - không phát hiện dữ liệu trùng lặp, ngoại lai, bất thường
 - các giá trị thiếu
   `event_name_1` thiếu 1807 giá trị (91.77%)
