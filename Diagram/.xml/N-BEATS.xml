@@ -1,0 +1,155 @@
+<mxfile host="app.diagrams.net" modified="2023-10-27T00:00:00.000Z" agent="Gemini-AI" version="21.6.8" type="device">
+  <diagram name="N-BEATS Architecture" id="nbeats-diagram-01">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="input_node" value="INPUT DATA&lt;br&gt;&lt;i&gt;(Feature Engineering)&lt;/i&gt;&lt;br&gt;Shape: (Batch, 30, N_feat)&lt;br&gt;Scaled &amp; Standardized" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flatten_node" value="FLATTEN&lt;br&gt;Shape: (Batch, 30 * N_feat)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge_input_flat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="input_node" target="flatten_node">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="block1" value="BLOCK 1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="280" y="140" width="200" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="b1_l1" value="Linear (Input -> 256)&lt;br&gt;ReLU + Dropout(0.1)" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="block1">
+          <mxGeometry y="30" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b1_l2" value="Linear (256 -> 256)&lt;br&gt;ReLU + Dropout(0.1)" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="block1">
+          <mxGeometry y="70" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b1_l3" value="Linear (256 -> 256)&lt;br&gt;ReLU + Dropout(0.1)" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="block1">
+          <mxGeometry y="110" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b1_l4" value="Linear (256 -> 256)&lt;br&gt;ReLU + Dropout(0.1)" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="block1">
+          <mxGeometry y="150" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b1_theta" value="THETA LAYER&lt;br&gt;Linear (256 -> Output)" style="text;strokeColor=none;fillColor=#f8cecc;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="block1">
+          <mxGeometry y="190" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="op_sub1" value="-" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="520" y="160" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="op_add1" value="+" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="520" y="480" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge_in_b1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="flatten_node" target="b1_l1">
+          <mxGeometry relative="1" as="geometry">
+             <Array as="points">
+              <mxPoint x="240" y="350" />
+              <mxPoint x="240" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_b1_back" value="Backcast&lt;br&gt;(Input Dim)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="b1_theta" target="op_sub1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_b1_resid_feed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;" edge="1" parent="1" source="flatten_node" target="op_sub1">
+           <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="350" />
+            </Array>
+           </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_b1_fore" value="Forecast&lt;br&gt;(1 Step)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;" edge="1" parent="1" source="b1_theta" target="op_add1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="block2" value="BLOCK 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="160" width="100" height="140" as="geometry" />
+        </mxCell>
+         <mxCell id="op_sub2" value="-" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="740" y="160" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="op_add2" value="+" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="630" y="480" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge_resid1_b2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.25;" edge="1" parent="1" source="op_sub1" target="block2">
+          <mxGeometry relative="1" as="geometry">
+             <mxPoint x="580" y="180" as="sourcePoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_b2_back" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.25;entryX=0;entryY=0.5;" edge="1" parent="1" source="block2" target="op_sub2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+         <mxCell id="edge_resid_feed2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0.5;entryY=0;" edge="1" parent="1" source="op_sub1" target="op_sub2">
+           <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="130" />
+              <mxPoint x="760" y="130" />
+            </Array>
+           </mxGeometry>
+        </mxCell>
+         <mxCell id="edge_b2_fore" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="block2" target="op_add2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_sum1_2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="op_add1" target="op_add2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dots" value="..." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="800" y="210" width="60" height="30" as="geometry" />
+        </mxCell>
+         <mxCell id="dots_sum" value="..." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="700" y="485" width="60" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="block4" value="BLOCK 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="880" y="160" width="100" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge_dots_b4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.25;" edge="1" parent="1" source="op_sub2" target="block4">
+           <mxGeometry relative="1" as="geometry">
+             <Array as="points">
+                <mxPoint x="840" y="180" />
+                <mxPoint x="840" y="195" />
+             </Array>
+           </mxGeometry>
+        </mxCell>
+         <mxCell id="op_add_final" value="+" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="910" y="480" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_b4_fore" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="block4" target="op_add_final">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_sum_dots" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="op_add2" target="op_add_final">
+          <mxGeometry relative="1" as="geometry">
+             <Array as="points">
+               <mxPoint x="800" y="500" />
+             </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="output_node" value="FINAL FORECAST&lt;br&gt;Shape: (Batch, 1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="460" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_final_out" style="edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="op_add_final" target="output_node">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="training_note" value="TRAINING CONFIG&lt;br&gt;-----------------------------&lt;br&gt;Loss: MSELoss&lt;br&gt;Optim: AdamW (lr=1e-3, decay=1e-4)&lt;br&gt;Scheduler: ReduceLROnPlateau&lt;br&gt;Gradient Clip: 5.0&lt;br&gt;Batch Size: 512" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="500" width="240" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lbl_residual" value="Residual Stream (Backcast Subtraction)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#FF0000;" vertex="1" parent="1">
+          <mxGeometry x="580" y="100" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_forecast" value="Forecast Stream (Summation)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontColor=#009900;" vertex="1" parent="1">
+          <mxGeometry x="580" y="540" width="240" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
