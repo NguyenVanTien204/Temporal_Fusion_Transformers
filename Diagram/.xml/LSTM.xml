@@ -1,0 +1,135 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="LSTM Architecture" id="lstm-arch">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Kiến trúc Stacked LSTM cho Dự đoán Doanh số" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="284.5" y="40" width="600" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Input Layer -->
+        <mxCell id="input" value="&lt;b&gt;Input Layer&lt;/b&gt;&lt;br&gt;Shape: (batch_size, 30, N_feat)&lt;br&gt;30 timesteps&lt;br&gt;N_feat features (lag, rolling, one-hot)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="384.5" y="120" width="400" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 1 -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="input" target="lstm1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- LSTM Layer 1 -->
+        <mxCell id="lstm1" value="&lt;b&gt;LSTM Layer 1&lt;/b&gt;&lt;br&gt;Hidden units: 128&lt;br&gt;return_sequences=True&lt;br&gt;&lt;br&gt;&lt;b&gt;Gates:&lt;/b&gt; Forget, Input, Cell, Output&lt;br&gt;Activation: sigmoid/tanh&lt;br&gt;&lt;br&gt;&lt;b&gt;Parameters:&lt;/b&gt;&lt;br&gt;4 × (N_feat×128 + 128×128 + 128)&lt;br&gt;&lt;br&gt;&lt;b&gt;Internal Dropout:&lt;/b&gt; 0.2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="384.5" y="240" width="400" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 2 -->
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="lstm1" target="lstm2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- LSTM Layer 2 -->
+        <mxCell id="lstm2" value="&lt;b&gt;LSTM Layer 2&lt;/b&gt;&lt;br&gt;Hidden units: 128&lt;br&gt;return_sequences=True&lt;br&gt;(slicing lấy timestep cuối)&lt;br&gt;&lt;br&gt;&lt;b&gt;Gates:&lt;/b&gt; Forget, Input, Cell, Output&lt;br&gt;Activation: sigmoid/tanh&lt;br&gt;&lt;br&gt;&lt;b&gt;Parameters:&lt;/b&gt;&lt;br&gt;4 × (128×128 + 128×128 + 128)&lt;br&gt;&lt;br&gt;&lt;b&gt;Internal Dropout:&lt;/b&gt; 0.2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="384.5" y="440" width="400" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 3 -->
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="lstm2" target="dropout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Dropout Layer -->
+        <mxCell id="dropout" value="&lt;b&gt;Dropout Layer&lt;/b&gt;&lt;br&gt;p = 0.2&lt;br&gt;Regularization trên vector 128-dim" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="384.5" y="650" width="400" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow 4 -->
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="dropout" target="dense">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Dense Output Layer -->
+        <mxCell id="dense" value="&lt;b&gt;Dense Output Layer&lt;/b&gt;&lt;br&gt;nn.Linear(128, 1)&lt;br&gt;Activation: Linear (default)&lt;br&gt;Output: (batch_size,)&lt;br&gt;Doanh số chuẩn hóa (StandardScaler)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="384.5" y="760" width="400" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Training Info Box -->
+        <mxCell id="training" value="&lt;b&gt;THÔNG TIN HUẤN LUYỆN&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Loss Function:&lt;/b&gt; MSE&lt;br&gt;&lt;b&gt;Optimizer:&lt;/b&gt; AdamW&lt;br&gt;&lt;b&gt;Learning Rate:&lt;/b&gt; 1e-3&lt;br&gt;&lt;b&gt;Batch Size:&lt;/b&gt; 256&lt;br&gt;&lt;b&gt;Max Epochs:&lt;/b&gt; 30&lt;br&gt;&lt;b&gt;Early Stopping:&lt;/b&gt; patience=5&lt;br&gt;&lt;b&gt;Validation Metric:&lt;/b&gt; MSE&lt;br&gt;&lt;b&gt;Best Weights:&lt;/b&gt; lstm_best.pt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="870" y="240" width="260" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- Model Info Box -->
+        <mxCell id="model_info" value="&lt;b&gt;THÔNG TIN MÔ HÌNH&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Loại:&lt;/b&gt; Stacked LSTM (2 layers)&lt;br&gt;&lt;b&gt;Mục tiêu:&lt;/b&gt; Hồi quy doanh số&lt;br&gt;&lt;b&gt;Kiến trúc:&lt;/b&gt; LSTM-Dense hybrid&lt;br&gt;&lt;b&gt;Timesteps:&lt;/b&gt; 30&lt;br&gt;&lt;b&gt;Output:&lt;/b&gt; 1 step ahead&lt;br&gt;&lt;b&gt;Regularization:&lt;/b&gt; Dropout 0.2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="260" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Feature Engineering Box -->
+        <mxCell id="features" value="&lt;b&gt;FEATURE ENGINEERING&lt;/b&gt;&lt;br&gt;&lt;br&gt;• Lag features&lt;br&gt;• Rolling statistics&lt;br&gt;• Promotion indicators&lt;br&gt;• One-hot encoding:&lt;br&gt;  - StateHoliday&lt;br&gt;  - StoreType&lt;br&gt;  - Assortment&lt;br&gt;• Temporal features" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;align=left;verticalAlign=top;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="260" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- Data Flow Labels -->
+        <mxCell id="label1" value="(batch, 30, N_feat)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="820" y="145" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label2" value="(batch, 30, 128)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="820" y="305" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label3" value="(batch, 30, 128)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="820" y="510" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label4" value="(batch, 128)&lt;br&gt;[timestep cuối]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="820" y="670" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label5" value="(batch,)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="820" y="790" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- LSTM Cell Detail -->
+        <mxCell id="lstm_detail" value="&lt;b&gt;LSTM CELL GATES&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Forget Gate:&lt;/b&gt; f = σ(W_f·x + U_f·h)&lt;br&gt;&lt;b&gt;Input Gate:&lt;/b&gt; i = σ(W_i·x + U_i·h)&lt;br&gt;&lt;b&gt;Cell Gate:&lt;/b&gt; c̃ = tanh(W_c·x + U_c·h)&lt;br&gt;&lt;b&gt;Output Gate:&lt;/b&gt; o = σ(W_o·x + U_o·h)&lt;br&gt;&lt;br&gt;&lt;b&gt;Cell State:&lt;/b&gt; c_t = f⊙c_{t-1} + i⊙c̃&lt;br&gt;&lt;b&gt;Hidden State:&lt;/b&gt; h_t = o⊙tanh(c_t)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;align=left;verticalAlign=top;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="870" y="460" width="260" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend_title" value="&lt;b&gt;CHÚ THÍCH&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="660" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="695" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1_text" value="Input Layer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="690" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="725" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2_text" value="LSTM Layers" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="720" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend3" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="40" y="755" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3_text" value="Regularization" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="750" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend4" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="40" y="785" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4_text" value="Output Layer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="780" width="100" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
